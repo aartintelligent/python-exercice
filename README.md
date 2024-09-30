@@ -43,7 +43,6 @@ Développer une API RESTful capable de :
 
 4. **Validation des entrées** :
    - Vérifier que le body de la requête contient un JSON valide.
-   - Valider la présence des champs clés requis dans le body et les paramètres URL (`solution`, `model`, `action`, etc.).
 
 5. **Réponses HTTP** :
    - Retourner un statut HTTP 200 avec un message de succès si le message est publié avec succès.
