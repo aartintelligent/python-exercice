@@ -1,5 +1,3 @@
-Voici un autre exercice pour tester les compétences d'un candidat en Odoo. Cet exercice est orienté sur la **gestion des inventaires** et l'intégration avec des **API externes**, un cas courant dans des projets Odoo.
-
 ### Exercice : Synchronisation des Stocks avec une API Externe
 
 **Contexte :**
@@ -67,5 +65,3 @@ Votre tâche consiste à développer un module qui permet :
 ### Ressources supplémentaires :
 - Une instance Odoo avec le module de gestion de stock activé.
 - Un environnement pour simuler ou accéder à une API REST.
-
-Cet exercice mettra en lumière la capacité du candidat à gérer des projets complexes d'intégration et de synchronisation des données avec des systèmes externes, ainsi que sa maîtrise des outils de base comme les tâches CRON et les vues personnalisées dans Odoo.
