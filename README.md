@@ -98,7 +98,7 @@ docker compose build
 docker compose up
 ```
 
-### Access
+### Access to Odoo
 
 ```text
 http://localhost:8089/web
