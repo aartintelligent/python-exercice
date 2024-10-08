@@ -1,109 +1,71 @@
-### Exercice : Développement d'une API avec gestion d'événements, base de données et RabbitMQ
+Voici un autre exercice pour tester les compétences d'un candidat en Odoo. Cet exercice est orienté sur la **gestion des inventaires** et l'intégration avec des **API externes**, un cas courant dans des projets Odoo.
 
-**Contexte**  
-Vous allez développer une application API qui reçoit des événements au format JSON via une requête HTTP, les stocke dans une base de données, génère un identifiant unique pour chaque événement, et publie ces événements dans une file d'attente RabbitMQ. Cette API doit également ajouter une date d'événement et un UID unique avant la publication.
+### Exercice : Synchronisation des Stocks avec une API Externe
 
-### Objectif général
-Développer une API RESTful capable de :
-1. Recevoir des événements au format JSON.
-2. Enregistrer ces événements dans une base de données.
-3. Générer un UID unique pour chaque événement.
-4. Publier ces événements dans une queue RabbitMQ avec l'UID et un horodatage.
+**Contexte :**
+Une entreprise fictive, **GlobalShop**, gère ses stocks dans Odoo mais souhaite synchroniser ses niveaux de stock avec un système externe via une API REST. L'objectif est de créer un module Odoo personnalisé qui synchronise les quantités de stock d'un produit entre Odoo et l'API externe.
 
-### Détails de l'Exercice
+**Objectifs :**
+Votre tâche consiste à développer un module qui permet :
+1. De récupérer les informations de stock depuis une API externe.
+2. De mettre à jour automatiquement les quantités de stock dans Odoo en fonction des données de l'API.
+3. D'afficher les informations de synchronisation dans l'interface d'Odoo.
 
-1. **Route API** :
-   - Vous devez créer une route `POST /api/event/{solution}/{model}/{action}`.
-   - Cette route doit recevoir un body au format JSON avec les données de l'événement.
-   - La route doit générer un **UID unique** pour chaque événement avant de le publier.
-   - La route doit ajouter un champ `event_timestamp` contenant la date de l'événement en format UTC.
+### Détails de l'exercice :
 
-2. **Stockage dans la base de données** :
-   - Enregistrer l'UID généré ainsi que les données de l'événement dans une base de données relationnelle (par exemple, PostgreSQL ou SQLite).
-   - La base de données doit contenir au moins les champs suivants :
-     - `event_uid` : UID unique généré pour l'événement.
-     - `event_timestamp` : Horodatage de l'événement.
-     - `event_data` : Les données JSON reçues.
+1. **Création du Module :**
+   - Créez un module Odoo personnalisé appelé `stock_sync_api`.
+   - Le module doit permettre de synchroniser les quantités de stock pour chaque produit à partir d'une API externe.
 
-3. **Gestion de RabbitMQ** :
-   - Publier les messages dans une queue RabbitMQ définie par le chemin `{solution}/{model}/{action}`. Par exemple, si l'URL est `/api/event/ecommerce/order/create`, le message doit être publié dans une queue nommée `ecommerce/order/create`.
-   - Le message publié doit suivre le format suivant :
+2. **API Externe :**
+   - Simulez une API REST qui retourne les informations de stock des produits sous le format JSON.
+     - Exemple de réponse de l'API : 
+       ```json
+       {
+           "product_id": "123",
+           "quantity": "50"
+       }
+       ```
+   - Le candidat peut utiliser un service en ligne comme Postman pour simuler cette API ou un serveur local avec Flask par exemple.
 
-   ```json
-   {
-     "event_uid": "xxxxxxxxxxxxxxxxxxxxxxxxx",
-     "event_timestamp": "2024-09-25T12:34:56Z",
-     "event_data": {
-       "order_id": 12345,
-       "customer": "John Doe",
-       "total_amount": 250
-     }
-   }
-   ```
+3. **Modèle de Données :**
+   - Ajoutez un champ dans le modèle `product.template` pour stocker l'ID externe du produit utilisé par l'API.
+   - Ajoutez un champ pour suivre la dernière date de synchronisation.
 
-4. **Validation des entrées** :
-   - Vérifier que le body de la requête contient un JSON valide.
+4. **Intégration API :**
+   - Créez une fonction dans le module qui appelle l'API externe pour récupérer les informations de stock d'un produit.
+   - Comparez les quantités de stock récupérées avec celles d'Odoo.
+   - Si les quantités diffèrent, mettez à jour les stocks dans Odoo.
 
-5. **Réponses HTTP** :
-   - Retourner un statut HTTP 200 avec un message de succès si le message est publié avec succès.
-   - Retourner un statut HTTP 400 en cas d'erreurs de validation (ex. : JSON invalide).
-   - Retourner un statut HTTP 500 en cas d'échec de la publication dans RabbitMQ ou de l'enregistrement dans la base de données.
+5. **Vue Personnalisée :**
+   - Modifiez la vue de produit pour inclure une section "API Synchronisation" avec :
+     - L'ID externe du produit.
+     - Le bouton pour "Lancer la synchronisation" manuellement.
+     - La dernière date de synchronisation.
 
-6. **Tests unitaires** :
-   - Écrire des tests unitaires pour valider la fonctionnalité de l'API, incluant la validation des données, la génération de l'UID, et la gestion des erreurs.
+6. **Automatisation :**
+   - Créez une tâche CRON (programmée) qui exécute la synchronisation de tous les produits de manière régulière (par exemple, toutes les heures).
+   - Documentez comment le CRON peut être configuré et ajusté via Odoo.
 
-### Exemples
+7. **Gestion des Erreurs :**
+   - Gérez les erreurs possibles lors de l'appel à l'API (erreur de connexion, réponse invalide, produit non trouvé).
+   - Loggez les erreurs pour faciliter le débogage.
 
-**Requête :**
+8. **Test et Documentation :**
+   - Créez plusieurs cas de test pour valider :
+     - Que la synchronisation fonctionne correctement (quantité mise à jour).
+     - Que les erreurs sont bien gérées (ex. : appel à l'API échoue).
+   - Documentez l'installation du module, l'utilisation du bouton de synchronisation manuelle et la configuration du CRON.
 
-```
-POST /api/event/ecommerce/order/create
-Content-Type: application/json
+### Critères d'évaluation :
+- Compétence dans l'intégration d'API externes avec Odoo.
+- Capacité à créer et gérer des tâches CRON pour l'automatisation.
+- Gestion des erreurs d'intégration.
+- Structuration propre du module et organisation du code.
+- Clarté de la documentation et capacité à tester les fonctionnalités développées.
 
-{
-    "order_id": 12345,
-    "customer": "John Doe",
-    "total_amount": 250
-}
-```
+### Ressources supplémentaires :
+- Une instance Odoo avec le module de gestion de stock activé.
+- Un environnement pour simuler ou accéder à une API REST.
 
-**Réponse attendue :**
-
-```json
-{
-    "message": "Event published to queue ecommerce/order/create",
-    "status": "success"
-}
-```
-
-**Message publié dans RabbitMQ :**
-
-```json
-{
-    "event_uid": "b7e23ec29af22b0b4e41da31e868d57226121c84",
-    "event_timestamp": "2024-09-25T12:34:56Z",
-    "event_data": {
-      "order_id": 12345,
-      "customer": "John Doe",
-      "total_amount": 250
-    }
-}
-```
-
-### Contraintes techniques
-- Utiliser **Flask** ou **FastAPI** pour développer l'API.
-- Utiliser **pika** pour interagir avec RabbitMQ.
-- Utiliser une base de données relationnelle (PostgreSQL, MySQL, ou SQLite).
-- Documentez le code, incluant la configuration nécessaire pour RabbitMQ et la base de données.
-
-### Bonus
-- Vous pouvez configurer l'API et RabbitMQ via **docker-compose** afin de faciliter le déploiement.
-- Implémenter une stratégie de retry en cas de défaillance lors de la publication dans RabbitMQ.
-
-### Critères d'évaluation
-- **Qualité du code** : Structure, lisibilité et organisation du projet.
-- **Fonctionnalité** : L'API fonctionne correctement, les événements sont bien publiés dans RabbitMQ et enregistrés dans la base de données.
-- **Robustesse** : Gestion correcte des erreurs et des cas limites.
-- **Tests** : Qualité et couverture des tests unitaires.
-
-Bonne chance et n’hésitez pas à poser des questions si nécessaire !
+Cet exercice mettra en lumière la capacité du candidat à gérer des projets complexes d'intégration et de synchronisation des données avec des systèmes externes, ainsi que sa maîtrise des outils de base comme les tâches CRON et les vues personnalisées dans Odoo.
