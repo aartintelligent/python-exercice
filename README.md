@@ -80,7 +80,13 @@ Votre tâche consiste à développer un module qui permet :
 
 # Local development
 
-### Build project
+### Install docker
+
+```text
+https://docs.docker.com/engine/install/
+```
+
+###  project
 
 ```shell
 docker compose build
