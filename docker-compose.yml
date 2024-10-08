@@ -20,7 +20,6 @@ services:
     restart: always
     tty: true
     volumes:
-      - ./enterprise:/mnt/enterprise:ro
       - ./addons:/mnt/addons:ro
       - odoo-volume:/var/lib/odoo
     depends_on:
