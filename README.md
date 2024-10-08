@@ -86,7 +86,7 @@ Votre tâche consiste à développer un module qui permet :
 https://docs.docker.com/engine/install/
 ```
 
-###  project
+### Build project
 
 ```shell
 docker compose build
