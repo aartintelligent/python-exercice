@@ -1,4 +1,4 @@
-# Exercice : 
+# Exercice :
 
 ## Synchronisation des Stocks avec une API Externe
 
@@ -80,22 +80,31 @@ Votre tâche consiste à développer un module qui permet :
 
 # Local development
 
-Build project
+### Build project
 
 ```shell
 docker compose build
 ```
 
-Start project
+### Start project
 
 ```shell
 docker compose up
 ```
 
-Destroy project
+### Access
+
+```text
+http://localhost:8089/web
+```
+
+### Destroy project
 
 ```shell
 docker compose down -v
 ```
 
+### Note
+
+Il est possible d'installer un module enterprise, dans le cadre de l'exercice il faut installer le module inventaire.
 
