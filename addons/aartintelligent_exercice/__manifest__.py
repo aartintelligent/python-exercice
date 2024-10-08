@@ -2,7 +2,7 @@
 
 {
     'name': 'AArtIntelligent Excercice',
-    'summary': 'Todot',
+    'summary': 'Todo',
     'version': '1.0.0',
     'category': 'Hidden',
     'author': 'AArtIntelligent',
